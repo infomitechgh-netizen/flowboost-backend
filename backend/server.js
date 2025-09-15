@@ -53,6 +53,9 @@ app.use("/api/tickets", ticketsRouter);
 app.use("/api", contactRoutes);
 app.use("/api/search", searchRoutes);
 
+app.get("/", (req, res) => {
+  res.send("FlowBoost Backend is running 🚀");
+});
 
 
 
