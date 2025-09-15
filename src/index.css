@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FlowPanel Design System
+   Colors, gradients, fonts, shadows, and animations.
+   All colors use HSL for easy theming.
+*/
+
+@layer base {
+  :root {
+    /* FlowPanel Theme */
+    --background: 222 20% 5%;
+    --foreground: 220 15% 92%;
+
+    --card: 222 15% 8%;
+    --card-foreground: 220 15% 92%;
+
+    --popover: 222 15% 8%;
+    --popover-foreground: 220 15% 92%;
+
+    --primary: 200 80% 55%; /* Flow Blue */
+    --primary-foreground: 220 15% 98%;
+    --primary-glow: 200 80% 65%;
+
+    --secondary: 170 70% 40%; /* Teal Secondary */
+    --secondary-foreground: 220 15% 95%;
+
+    --muted: 222 15% 10%;
+    --muted-foreground: 220 8% 55%;
+
+    --accent: 25 95% 60%; /* Orange Accent */
+    --accent-foreground: 220 15% 98%;
+
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 220 15% 98%;
+
+    --success: 142 70% 50%;
+    --success-foreground: 220 15% 98%;
+
+    --warning: 45 90% 55%;
+    --warning-foreground: 222 20% 5%;
+
+    --border: 222 15% 15%;
+    --input: 222 15% 12%;
+    --ring: 200 80% 55%;
+
+    --radius: 0.8rem;
+
+    /* Sidebar */
+    --sidebar-background: 222 15% 6%;
+    --sidebar-foreground: 220 15% 85%;
+    --sidebar-primary: 200 80% 55%;
+    --sidebar-primary-foreground: 220 15% 98%;
+    --sidebar-accent: 222 15% 10%;
+    --sidebar-accent-foreground: 220 15% 85%;
+    --sidebar-border: 222 15% 12%;
+    --sidebar-ring: 200 80% 55%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(200 80% 55%), hsl(170 70% 50%));
+    --gradient-secondary: linear-gradient(135deg, hsl(222 15% 8%), hsl(222 15% 12%));
+    --gradient-accent: linear-gradient(135deg, hsl(25 95% 60%), hsl(35 95% 65%));
+    --gradient-success: linear-gradient(135deg, hsl(142 70% 50%), hsl(160 60% 45%));
+    --gradient-hero: linear-gradient(
+      135deg,
+      hsl(200 80% 55%) 0%,
+      hsl(170 70% 50%) 50%,
+      hsl(170 70% 50%) 100%
+     /* hsl(25 95% 60%) 100%*/
+    );
+
+    /* Shadows & Glows */
+    --shadow-elegant: 0 10px 30px -10px hsl(222 20% 2% / 0.5);
+    --shadow-glow: 0 0 40px hsl(200 80% 55% / 0.15);
+    --shadow-card: 0 4px 20px -2px hsl(222 20% 2% / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .dark {
+    /* Dark mode: Keep same FlowPanel palette */
+    --background: 222 20% 5%;
+    --foreground: 220 15% 92%;
+    --card: 222 15% 8%;
+    --card-foreground: 220 15% 92%;
+    --popover: 222 15% 8%;
+    --popover-foreground: 220 15% 92%;
+
+    --primary: 200 80% 55%;
+    --primary-foreground: 220 15% 98%;
+    --secondary: 170 70% 40%;
+    --secondary-foreground: 220 15% 95%;
+    --muted: 222 15% 10%;
+    --muted-foreground: 220 8% 55%;
+    --accent: 25 95% 60%;
+    --accent-foreground: 220 15% 98%;
+
+    --border: 222 15% 15%;
+    --input: 222 15% 12%;
+    --ring: 200 80% 55%;
+    --sidebar-background: 222 15% 6%;
+    --sidebar-foreground: 220 15% 85%;
+    --sidebar-primary: 200 80% 55%;
+    --sidebar-primary-foreground: 220 15% 98%;
+    --sidebar-accent: 222 15% 10%;
+    --sidebar-accent-foreground: 220 15% 85%;
+    --sidebar-border: 222 15% 12%;
+    --sidebar-ring: 200 80% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  /* Scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.7);
+  }
+}
+
+@layer components {
+
+  /* Hover gradient for buttons */
+.hover-gradient-primary {
+  @apply smooth-transition;
+}
+.hover-gradient-primary:hover {
+  background: var(--gradient-primary);
+  color: var(--primary-foreground);
+}
+
+  /* Custom Utilities */
+  .glass-card {
+    @apply backdrop-blur-sm border border-white/10 bg-card/50;
+    box-shadow: var(--shadow-card);
+  }
+
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+
+  .primary-gradient {
+    background: var(--gradient-primary);
+  }
+
+  .glow-effect {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .smooth-transition {
+    transition: var(--transition-smooth);
+  }
+
+  .spring-transition {
+    transition: var(--transition-spring);
+  }
+
+  /* Hover animations */
+  .hover-lift {
+    @apply smooth-transition hover:translate-y-[-2px] hover:shadow-lg;
+  }
+
+  .hover-glow {
+    @apply smooth-transition hover:glow-effect;
+  }
+
+  .hover-scale {
+    @apply smooth-transition hover:scale-105;
+  }
+
+  /* Responsive helpers */
+  .responsive-card-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4;
+  }
+
+  .responsive-table {
+    @apply w-full overflow-x-auto;
+  }
+
+  .mobile-full-btn {
+    @apply w-full sm:w-auto;
+  }
+}
