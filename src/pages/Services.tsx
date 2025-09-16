@@ -41,7 +41,7 @@ import {
   SiSoundcloud,
   SiReddit,
 } from "react-icons/si";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 interface Service {
   id: number;
   name: string;
@@ -96,7 +96,7 @@ const Services = () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) return;
-        const res = await axios.get("http://localhost:5000/api/profile", {
+        const res = await axios.get(`${BASE_URL}/api/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUserRole(res.data.role);
@@ -115,7 +115,7 @@ const Services = () => {
   ) => {
     try {
       const token = localStorage.getItem("token");
-      let url = `http://localhost:5000/api/services?page=${pageNumber}&limit=${limit}`;
+      let url = `${BASE_URL}/api/services?page=${pageNumber}&limit=${limit}`;
       if (category) url += `&category=${category}`;
       if (search) url += `&search=${search}`;
       const res = await axios.get(url, {
@@ -431,11 +431,9 @@ const Services = () => {
                               orderQuantity) /
                             1000,
                         };
-                        await axios.post(
-                          "http://localhost:5000/api/orders",
-                          payload,
-                          { headers: { Authorization: `Bearer ${token}` } }
-                        );
+                        await axios.post(`${BASE_URL}/api/orders`, payload, {
+                          headers: { Authorization: `Bearer ${token}` },
+                        });
                         alert("Order placed successfully!");
                         setOrderModalOpen(false);
                       } catch (err: any) {

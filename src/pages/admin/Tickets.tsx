@@ -16,6 +16,9 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
 //import { TicketMessagesModal } from "@/components/TicketMessagesModal";
 import { TicketMessagesModal } from "@/components/support/src/components/support/TicketMessagesModal";
+
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
 // Utility functions (same as your original file)
 const getStatusColor = (status: string) => {
   switch (status) {
@@ -65,9 +68,10 @@ export default function Tickets() {
   const token = localStorage.getItem("token");
 
   // Fetch all tickets (admin)
+
   const fetchTickets = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/tickets", {
+      const res = await axios.get(`${BASE_URL}/api/tickets`, {
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       });
       setTickets(res.data);
@@ -84,20 +88,17 @@ export default function Tickets() {
   // open modal and fetch detailed ticket (with messages)
   const openTicketModal = async (ticket: any) => {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/tickets/${ticket.id}`,
-        {
-          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-        }
-      );
+      const res = await axios.get(`${BASE_URL}/api/tickets/${ticket.id}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      });
+
       setSelectedTicket(res.data);
     } catch (err) {
       console.error(
         "Failed to fetch single ticket, falling back to summary object",
         err
       );
-      // fallback to use the smaller ticket object we already have — modal will fall back to ticket.messages or mock
-      setSelectedTicket(ticket);
+      setSelectedTicket(ticket); // fallback to local ticket object
     } finally {
       setIsModalOpen(true);
     }

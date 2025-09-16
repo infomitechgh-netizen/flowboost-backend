@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import axios from "axios";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 export default function OrderModal({ open, onClose, serviceId }: { open: boolean; onClose: () => void; serviceId: number }) {
   const [quantity, setQuantity] = useState("");
@@ -13,7 +14,7 @@ export default function OrderModal({ open, onClose, serviceId }: { open: boolean
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/orders",
+        `${BASE_URL}/api//orders",
         { serviceId, quantity },
         { headers: { Authorization: `Bearer ${token}` } }
       );

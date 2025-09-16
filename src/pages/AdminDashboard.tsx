@@ -49,6 +49,7 @@ import {
 } from "@/components/ui/select";
 //import { DashboardLayout } from "@/components/layout/DashboardLayout"
 
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 // Define what we expect from the profile API
 interface UserProfile {
   id: number;
@@ -110,7 +111,7 @@ const AdminDashboard = () => {
         variant: "default",
       });
 
-      const res = await fetch("http://localhost:5000/api/services/sync", {
+      const res = await fetch(`${BASE_URL}/api/services/sync`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

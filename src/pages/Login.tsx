@@ -4,6 +4,7 @@ import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import Logo from "@/assets/logo.jpg"; // ✅ logo image
 import Title from "@/assets/flowpane.png"; // ✅ title image
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ const Login = () => {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post(`${BASE_URL}/api/auth/login`, {
         email,
         password,
       });

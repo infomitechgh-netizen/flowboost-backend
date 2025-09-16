@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Logo from "@/assets/logo.jpg";   
-import Title from "@/assets/flowpane.png"; 
-
+import Logo from "@/assets/logo.jpg";
+import Title from "@/assets/flowpane.png";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const ResetPassword = () => {
   const { token } = useParams(); // get token from URL
   const [password, setPassword] = useState("");
@@ -22,9 +22,12 @@ const ResetPassword = () => {
     }
 
     try {
-      const res = await axios.post(`http://localhost:5000/api/auth/reset-password/${token}`, {
-        password,
-      });
+      const res = await axios.post(
+        `${BASE_URL}/api/auth/reset-password/${token}`,
+        {
+          password,
+        }
+      );
       setMessage(res.data.message);
       setTimeout(() => navigate("/login"), 2000); // redirect to login
     } catch (err: any) {
@@ -38,7 +41,11 @@ const ResetPassword = () => {
         {/* Logo + Title */}
         <div className="flex items-center justify-center mb-6">
           <img src={Logo} alt="Logo" className="h-12 w-16 object-contain" />
-          <img src={Title} alt="FlowBoostPanel" className="h-12 md:h-16 object-contain" />
+          <img
+            src={Title}
+            alt="FlowBoostPanel"
+            className="h-12 md:h-16 object-contain"
+          />
         </div>
 
         <h2 className="text-xl text-center mb-6 text-gray-800">
@@ -68,7 +75,9 @@ const ResetPassword = () => {
         </button>
 
         {message && (
-          <p className="text-sm text-center text-muted-foreground mb-4">{message}</p>
+          <p className="text-sm text-center text-muted-foreground mb-4">
+            {message}
+          </p>
         )}
 
         <div className="text-center">

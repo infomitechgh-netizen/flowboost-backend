@@ -33,6 +33,7 @@ import Title from "@/assets/flowpane.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Footer } from "@/components/layout/Footer";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const Contact = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -47,10 +48,7 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/contact",
-        formData
-      );
+      const res = await axios.post(`${BASE_URL}/api/contact`, formData);
       toast({
         title: "Message sent!",
         description: res.data.message,

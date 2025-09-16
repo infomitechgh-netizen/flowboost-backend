@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Logo from "@/assets/logo.jpg"; // ✅ logo image
 import Title from "@/assets/flowpane.png"; // ✅ title image
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const Signup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -87,7 +87,7 @@ const Signup = () => {
     try {
       const fullName = `${firstName.trim()} ${lastName.trim()}`;
 
-      const res = await axios.post("http://localhost:5000/api/auth/signup", {
+      const res = await axios.post(`${BASE_URL}/api/auth/signup`, {
         name: fullName,
         email,
         phone,

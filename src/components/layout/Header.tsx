@@ -15,6 +15,7 @@ import axios from "axios";
 // Import images
 import Logo from "@/assets/logo.jpg";
 import Title from "@/assets/flowpane.png";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 interface HeaderProps {
   children?: ReactNode;
@@ -37,21 +38,21 @@ export const Header = ({ children }: HeaderProps) => {
       try {
         // Fetch tickets
         const ticketsRes = await axios.get(
-          `http://localhost:5000/api/tickets/user/${userId}`,
+          `${BASE_URL}/api/tickets/user/${userId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setTickets(ticketsRes.data.slice(-5).reverse()); // last 5 tickets
 
         // Fetch orders
         const ordersRes = await axios.get(
-          `http://localhost:5000/api/orders/user/${userId}`,
+          `${BASE_URL}/api/orders/user/${userId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setOrders(ordersRes.data.slice(-5).reverse()); // last 5 orders
 
         // Fetch wallet topups
         const topupsRes = await axios.get(
-          `http://localhost:5000/api/wallet/user/${userId}`,
+          `${BASE_URL}/api/wallet/user/${userId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setTopups(topupsRes.data.slice(-5).reverse()); // last 5 topups

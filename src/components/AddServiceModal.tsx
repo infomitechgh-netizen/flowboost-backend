@@ -1,12 +1,24 @@
 // src/components/AddServiceModal.tsx
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import axios from "axios";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
-export default function AddServiceModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function AddServiceModal({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
 
@@ -14,7 +26,7 @@ export default function AddServiceModal({ open, onClose }: { open: boolean; onCl
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/services",
+        `${BASE_URL}/api/services`,
         { name, price },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -39,7 +51,11 @@ export default function AddServiceModal({ open, onClose }: { open: boolean; onCl
           </div>
           <div>
             <Label>Price</Label>
-            <Input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
+            <Input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
           </div>
           <Button onClick={handleAddService}>Save</Button>
         </div>

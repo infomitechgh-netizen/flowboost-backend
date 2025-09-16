@@ -17,6 +17,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ShoppingCartIcon } from "lucide-react";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
 type TicketReplyMessage = {
   ticket_id: string;
   content: string;
@@ -77,7 +79,7 @@ export const DashboardLayout = ({ children, user }: DashboardLayoutProps) => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `http://localhost:5000/api/search?q=${encodeURIComponent(query)}`,
+          `${BASE_URL}/api/search?q=${encodeURIComponent(query)}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const data = await res.json();
@@ -94,7 +96,7 @@ export const DashboardLayout = ({ children, user }: DashboardLayoutProps) => {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const res = await fetch("http://localhost:5000/api/auth/profile", {
+      const res = await fetch(`${BASE_URL}/api/auth/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to fetch profile");
@@ -114,12 +116,9 @@ export const DashboardLayout = ({ children, user }: DashboardLayoutProps) => {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const res = await fetch(
-        "http://localhost:5000/api/tickets/unread-count",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await fetch(`${BASE_URL}/api/tickets/unread-count`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await res.json();
       setNotificationsCount(data.count || 0);
     } catch (err) {

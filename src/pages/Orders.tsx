@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import axios from "axios";
 import { ShoppingCart, Calculator, Search } from "lucide-react";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 interface Order {
   id: number;
   service?: string | null;
@@ -74,7 +74,7 @@ const Orders = () => {
     try {
       setLoading(true);
       setError("");
-      const res = await fetch("http://localhost:5000/api/orders", {
+      const res = await fetch(`${BASE_URL}/api/orders`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error(await res.text());
@@ -120,7 +120,7 @@ const Orders = () => {
   const handleReorderClick = async (order: Order) => {
     try {
       await axios.post(
-        `http://localhost:5000/api/orders/${order.id}/reorder`,
+        `${BASE_URL}/api/orders/${order.id}/reorder`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -144,7 +144,7 @@ const Orders = () => {
     if (!selectedOrder) return;
     try {
       const res = await fetch(
-        `http://localhost:5000/api/orders/${selectedOrder.id}/refill`,
+        `${BASE_URL}/api/orders/${selectedOrder.id}/refill`,
         { method: "POST", headers: { Authorization: `Bearer ${token}` } }
       );
       const data = await res.json();
@@ -279,7 +279,7 @@ const Orders = () => {
                       onValueChange={async (newStatus) => {
                         try {
                           await axios.patch(
-                            `http://localhost:5000/api/orders/${order.id}/status`,
+                            `${BASE_URL}/api/orders/${order.id}/status`,
                             { status: newStatus },
                             { headers: { Authorization: `Bearer ${token}` } }
                           );
@@ -457,7 +457,7 @@ const Orders = () => {
                         onValueChange={async (newStatus) => {
                           try {
                             await axios.patch(
-                              `http://localhost:5000/api/orders/${order.id}/status`,
+                              `${BASE_URL}/api/orders/${order.id}/status`,
                               { status: newStatus },
                               { headers: { Authorization: `Bearer ${token}` } }
                             );

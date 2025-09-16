@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/auth"; // backend auth URL
+//const API_URL = "http://localhost:5000/api/auth"; // backend auth URL
+const API_URL = `${process.env.REACT_APP_BACKEND_URL}/api/auth`;
+
 // Replace with your Railway backend URL
 
 //const API_URL = process.env.REACT_APP_BACKEND_URL + "/api/auth";

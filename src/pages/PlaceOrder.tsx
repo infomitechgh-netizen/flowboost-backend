@@ -19,7 +19,7 @@ import axios from "axios";
 import { useServices, Service } from "@/context/ServicesContext";
 import { ShoppingBasketIcon } from "lucide-react";
 const MAX_RENDER = 500; // limit items rendered in dropdown to avoid freezing; increase if your UI handles it
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const PlaceOrder = () => {
   const { toast } = useToast();
   const {
@@ -129,7 +129,7 @@ const PlaceOrder = () => {
         link: formData.link,
         quantity: parseInt(formData.quantity),
       };
-      await axios.post("http://localhost:5000/api/orders", payload, {
+      await axios.post( `${BASE_URL}/api/orders`, payload, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 

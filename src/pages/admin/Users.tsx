@@ -12,7 +12,14 @@ import { useToast } from "@/hooks/use-toast";
 import { UserActionsMenu } from "@/components/admin/UserActionsMenu";
 import { ViewUserModal } from "@/components/admin/ViewUserModal";
 import { EditUserModal } from "@/components/admin/EditUserModal";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 const Users = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,11 +41,13 @@ const Users = () => {
 
   const fetchUsers = async (pageNumber = 1, search = "") => {
     try {
-      let url = `http://localhost:5000/api/users?page=${pageNumber}&limit=${limit}`;
+      let url = `${BASE_URL}/api/users?page=${pageNumber}&limit=${limit}`;
       if (search) url += `&search=${encodeURIComponent(search)}`;
+
       const res = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       setUsers(res.data.users);
       setTotalPages(res.data.totalPages);
       setPage(res.data.currentPage);
@@ -57,17 +66,20 @@ const Users = () => {
 
   const handleDeleteUser = async (userId: number) => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/${userId}`, {
+      await axios.delete(`${BASE_URL}/api/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       setUsers((prev) => prev.filter((u) => u.id !== userId));
+
       toast({
         title: "User Deleted",
-        description: `User has been deleted successfully.`,
+        description: "User has been deleted successfully.",
         variant: "destructive",
       });
     } catch (err) {
       console.error("Failed to delete user:", err);
+
       toast({
         title: "Delete Failed",
         description: "Could not delete the user. Try again.",

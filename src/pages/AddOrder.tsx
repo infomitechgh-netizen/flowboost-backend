@@ -20,6 +20,7 @@ import {
   SiReddit,
   SiSoundcloud,
 } from "react-icons/si";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 // Categories with icons
 const CATEGORIES = [
@@ -56,11 +57,12 @@ const AddOrder = () => {
 
     const fetchServices = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/services", {
+        const res = await axios.get(`${BASE_URL}/api/services`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const filtered = res.data.filter(
-          (s: any) => s.category.toLowerCase() === selectedCategory.toLowerCase()
+          (s: any) =>
+            s.category.toLowerCase() === selectedCategory.toLowerCase()
         );
         setServices(filtered);
         setSelectedService(null);
@@ -99,7 +101,7 @@ const AddOrder = () => {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/orders",
+        `${BASE_URL}/api/orders`,
         {
           service_id: selectedService.id,
           link,
@@ -118,7 +120,9 @@ const AddOrder = () => {
       setMessage("");
     } catch (err: any) {
       console.error("Order submission error:", err);
-      setMessage("Failed to place order: " + (err.response?.data?.message || err.message));
+      setMessage(
+        "Failed to place order: " + (err.response?.data?.message || err.message)
+      );
     }
   };
 

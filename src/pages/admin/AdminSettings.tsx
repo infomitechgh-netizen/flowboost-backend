@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ToggleRow } from "@/components/ToggleRow";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 const AdminSettings = () => {
   const [settings, setSettings] = useState({
@@ -41,7 +42,7 @@ const AdminSettings = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await axios.get("/api/admin/settings");
+        const res = await axios.get(`${BASE_URL}/api/admin/settings`);
         if (res.data.settings) {
           const s = res.data.settings;
           setSettings({
@@ -65,7 +66,7 @@ const AdminSettings = () => {
   // Save settings to backend
   const handleSave = async () => {
     try {
-      await axios.post("/api/admin/settings", settings);
+      const res = await axios.get(`${BASE_URL}/api/admin/settings`);
       alert("Settings saved successfully!");
     } catch (err) {
       console.error("Error saving settings:", err);

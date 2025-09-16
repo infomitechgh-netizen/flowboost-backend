@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Send, Shield } from "lucide-react";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 interface UserMessagesModalProps {
   ticket: any | null;
@@ -35,7 +36,7 @@ export default function UserMessagesModal({
     if (!ticket) return;
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/tickets/${ticket.id}/messages`,
+        `${BASE_URL}/api/tickets/${ticket.id}/messages`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMessages(res.data);
@@ -56,7 +57,7 @@ export default function UserMessagesModal({
     try {
       setSending(true);
       await axios.post(
-        `http://localhost:5000/api/tickets/${ticket.id}/messages`,
+       `${BASE_URL}/api/tickets/${ticket.id}/messages`,
         {
           message: newMessage,
           user_id: userId,

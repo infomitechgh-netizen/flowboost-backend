@@ -36,7 +36,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const getStatusColor = (status: string) => {
   switch (status) {
     case "open":
@@ -125,9 +125,9 @@ export default function UserSupport() {
 
   const fetchTickets = async () => {
     try {
-      let url = "http://localhost:5000/api/tickets";
+      let url = `${BASE_URL}/api/tickets`;
       if (userRole !== "admin") {
-        url = `http://localhost:5000/api/tickets/user/${userId}`;
+        url = `${BASE_URL}/api/tickets/user/${userId}`;
       }
       const res = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
@@ -160,7 +160,7 @@ export default function UserSupport() {
     setLoading(true);
     try {
       await axios.post(
-        "http://localhost:5000/api/tickets",
+        `${BASE_URL}/api/tickets`,
         {
           subject: newTicket.subject,
           description: newTicket.description,
@@ -210,7 +210,7 @@ export default function UserSupport() {
     try {
       setLoadingMessages(true);
       const res = await axios.get(
-        `http://localhost:5000/api/tickets/${ticketId}/messages`,
+        `${BASE_URL}/api/tickets/${ticketId}/messages`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMessages(res.data);
@@ -232,7 +232,7 @@ export default function UserSupport() {
     try {
       setSending(true);
       const res = await axios.post(
-        `http://localhost:5000/api/tickets/${selectedTicket.id}/messages`,
+        `${BASE_URL}/api/tickets/${selectedTicket.id}/messages`,
         {
           message: newMessage,
           user_id: userId,

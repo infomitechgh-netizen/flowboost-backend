@@ -17,7 +17,7 @@ import {
   ArrowDownLeft,
 } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 declare global {
   interface Window {
     PaystackPop: any;
@@ -39,7 +39,7 @@ const Wallet = () => {
   useEffect(() => {
     const fetchWallet = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/wallet", {
+        const res = await axios.get(`${BASE_URL}/api/wallet`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
 
@@ -106,7 +106,7 @@ const Wallet = () => {
       ) {
         // Request reference from backend
         const res = await axios.post(
-          "http://localhost:5000/api/wallet/paystack/init",
+          `${BASE_URL}/api/wallet/paystack/init`,
           { amount: amt },
           {
             headers: {
@@ -132,7 +132,7 @@ const Wallet = () => {
               (async () => {
                 try {
                   const verify = await axios.post(
-                    "http://localhost:5000/api/wallet/paystack/verify",
+                    `${BASE_URL}/api/wallet/paystack/verify`,
                     { reference: response.reference },
                     {
                       headers: {
@@ -148,16 +148,11 @@ const Wallet = () => {
                     `Payment successful! GH₵ ${verify.data.amount.toLocaleString()}  added to your wallet.`
                   );
 
-                  const txRes = await axios.get(
-                    "http://localhost:5000/api/wallet",
-                    {
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "token"
-                        )}`,
-                      },
-                    }
-                  );
+                  const txRes = await axios.get(`${BASE_URL}/api/wallet`, {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                  });
                   setTransactions(txRes.data.transactions);
                 } catch (err) {
                   console.error("Verification error:", err);

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "@/assets/logo.jpg";   
 import Title from "@/assets/flowpane.png"; 
 import axios from "axios";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 
 const ForgotPassword = () => {
@@ -18,7 +19,7 @@ const ForgotPassword = () => {
   }
    //setMessage("If this email is registered, you will receive reset instructions.");
   try {
-    const res = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
+    const res = await axios.post(`${BASE_URL}/api/auth/forgot-password`, { email });
     setMessage(res.data.message);
   } catch (err: any) {
     setMessage(err.response?.data?.message || "Something went wrong");

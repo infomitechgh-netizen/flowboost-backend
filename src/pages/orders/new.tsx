@@ -33,6 +33,9 @@ import {
   ArrowUpRight,
   ArrowDownLeft,
 } from "lucide-react";
+
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
 const CATEGORIES = [
   { name: "YouTube", icon: <FaYoutube size={24} color="#FF0000" /> },
   { name: "Instagram", icon: <FaInstagram size={24} color="#C13584" /> },
@@ -78,7 +81,8 @@ const NewOrderPage = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "http://localhost:5000/api/services?limit=100",
+          `${BASE_URL}/api/services?limit=100`,
+          // "http://localhost:5000/api/services?limit=100",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -111,7 +115,8 @@ const NewOrderPage = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/orders",
+        `${BASE_URL}/api/orders`,
+        // "http://localhost:5000/api/orders",
         {
           service_id: selectedService.id,
           link,

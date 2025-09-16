@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 interface Message {
   id: string | number;
@@ -66,7 +67,7 @@ export function TicketMessagesModal({
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `http://localhost:5000/api/tickets/${ticket.id}/messages`,
+        `${BASE_URL}/api/tickets/${ticket.id}/messages`,
         {
           headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         }
@@ -101,7 +102,7 @@ export function TicketMessagesModal({
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        `http://localhost:5000/api/tickets/${ticket.id}/messages`,
+        `${BASE_URL}/api/tickets/${ticket.id}/messages`,
         {
           message: newMessage,
           sender_type: isAdminView ? "admin" : "user",

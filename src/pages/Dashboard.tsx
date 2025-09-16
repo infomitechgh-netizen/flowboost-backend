@@ -7,6 +7,7 @@ import { RecentActivity } from "@/components/dashboard/RecentActivity";
 import { Wallet, ShoppingCart, CheckCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
 // Define the user profile type
 interface UserProfile {
@@ -18,7 +19,7 @@ interface UserProfile {
   member_since: string;
 }
 
-const socket = io("http://localhost:5000"); // replace with your server URL if different
+const socket = io(BASE_URL); // replace with your server URL if different
 
 const Dashboard = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -33,7 +34,8 @@ const Dashboard = () => {
   const fetchProfile = async () => {
     if (!token) return;
     try {
-      const res = await fetch("http://localhost:5000/api/auth/profile", {
+
+      const res = await fetch( `${BASE_URL}/api/auth/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to fetch profile");
@@ -56,7 +58,7 @@ const Dashboard = () => {
   const fetchActiveOrders = async () => {
     if (!token) return;
     try {
-      const res = await fetch("http://localhost:5000/api/orders/active-count", {
+      const res = await fetch(`${BASE_URL}/api/orders/active-count`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to fetch active orders count");
@@ -71,7 +73,7 @@ const Dashboard = () => {
     if (!token) return;
     try {
       const res = await fetch(
-        "http://localhost:5000/api/orders/completed-count",
+        `${BASE_URL}/api/orders/completed-count`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -87,7 +89,7 @@ const Dashboard = () => {
   const fetchTotalOrders = async () => {
     if (!token) return;
     try {
-      const res = await fetch("http://localhost:5000/api/orders/total-count", {
+      const res = await fetch(`${BASE_URL}/api/orders/total-count`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to fetch total orders count");

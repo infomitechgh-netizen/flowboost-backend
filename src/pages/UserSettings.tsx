@@ -16,11 +16,11 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Save, User, Bell, Shield, Palette, Settings } from "lucide-react";
 import { ToggleRow } from "@/components/ToggleRow";
 import axios from "axios";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 // ---- Fetch user profile ----
 const fetchUserProfile = async () => {
   const token = localStorage.getItem("token");
-  const { data } = await axios.get("http://localhost:5000/api/users/profile", {
+  const { data } = await axios.get( `${BASE_URL}/api/users/profile`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return data.user; // includes balance
@@ -30,7 +30,7 @@ const fetchUserProfile = async () => {
 const saveUserSettings = async (payload: any) => {
   const token = localStorage.getItem("token");
   const { data } = await axios.post(
-    "http://localhost:5000/api/users/settings",
+    `${BASE_URL}/api/users/settings`,
     payload,
     {
       headers: { Authorization: `Bearer ${token}` },
