@@ -34,8 +34,7 @@ const Dashboard = () => {
   const fetchProfile = async () => {
     if (!token) return;
     try {
-
-      const res = await fetch( `${BASE_URL}/api/auth/profile`, {
+      const res = await fetch(`${BASE_URL}/api/auth/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to fetch profile");
@@ -72,12 +71,9 @@ const Dashboard = () => {
   const fetchCompletedOrders = async () => {
     if (!token) return;
     try {
-      const res = await fetch(
-        `${BASE_URL}/api/orders/completed-count`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await fetch(`${BASE_URL}/api/orders/completed-count`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!res.ok) throw new Error("Failed to fetch completed orders count");
       const data = await res.json();
       setCompletedOrders(data.completedCount || 0);

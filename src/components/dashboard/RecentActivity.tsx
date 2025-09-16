@@ -15,7 +15,7 @@ interface ActivityItem {
 }
 
 // Connect to Socket.IO
-const socket = io(`${BASE_URL}`); // adjust if your server URL differs
+const socket = io(BASE_URL); // adjust if your server URL differs
 
 export const RecentActivity = () => {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
