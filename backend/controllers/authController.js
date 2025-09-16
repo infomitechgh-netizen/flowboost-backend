@@ -3,7 +3,7 @@ import pool from "../config/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 // Helper to generate token
 const generateToken = (user) => {
   return jwt.sign(
@@ -158,7 +158,7 @@ export const forgotPassword = async (req, res) => {
     const resetToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "15m" });
     await pool.query("UPDATE users SET reset_token = ? WHERE id = ?", [resetToken, user.id]);
 
-    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+    const resetLink =  `${BASE_URL}/reset-password/${resetToken}`;
 
     // Send email
     await sendEmail(

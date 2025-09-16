@@ -1,7 +1,14 @@
 // src/context/ServicesContext.tsx
-import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+  useCallback,
+} from "react";
 import axios from "axios";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 export interface Service {
   id: number;
   name: string;
@@ -21,7 +28,9 @@ type ServicesContextType = {
   refresh: () => Promise<void>;
 };
 
-const ServicesContext = createContext<ServicesContextType | undefined>(undefined);
+const ServicesContext = createContext<ServicesContextType | undefined>(
+  undefined
+);
 
 export const ServicesProvider = ({ children }: { children: ReactNode }) => {
   const [services, setServices] = useState<Service[]>([]);
@@ -29,7 +38,7 @@ export const ServicesProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const baseUrl = "http://localhost:5000"; // change if needed
+  const baseUrl = `${BASE_URL}`; // change if needed
 
   const doFetch = useCallback(async () => {
     setError(null);
@@ -39,7 +48,10 @@ export const ServicesProvider = ({ children }: { children: ReactNode }) => {
 
       // Fetch both endpoints in parallel
       const [svcRes, catRes] = await Promise.allSettled([
-        axios.get(`${baseUrl}/api/services`, { headers, params: { forOrderPage: true } }),
+        axios.get(`${baseUrl}/api/services`, {
+          headers,
+          params: { forOrderPage: true },
+        }),
         axios.get(`${baseUrl}/api/categories`, { headers }),
       ]);
 
@@ -47,19 +59,33 @@ export const ServicesProvider = ({ children }: { children: ReactNode }) => {
       let servicesData: Service[] = [];
       if (svcRes.status === "fulfilled") {
         const d = svcRes.value.data;
-        servicesData = Array.isArray(d) ? d : Array.isArray(d?.services) ? d.services : [];
+        servicesData = Array.isArray(d)
+          ? d
+          : Array.isArray(d?.services)
+          ? d.services
+          : [];
       }
 
       // Normalize categories response
       let categoriesData: string[] = [];
       if (catRes.status === "fulfilled") {
         const cd = catRes.value.data;
-        categoriesData = Array.isArray(cd) ? cd : Array.isArray(cd?.categories) ? cd.categories : [];
+        categoriesData = Array.isArray(cd)
+          ? cd
+          : Array.isArray(cd?.categories)
+          ? cd.categories
+          : [];
       }
 
       // If categories not returned, derive from services
       if (!categoriesData.length && servicesData.length) {
-        categoriesData = Array.from(new Set(servicesData.map((s) => (s.category || "").toString()).filter(Boolean)));
+        categoriesData = Array.from(
+          new Set(
+            servicesData
+              .map((s) => (s.category || "").toString())
+              .filter(Boolean)
+          )
+        );
       }
 
       // Update state + localStorage cache
@@ -67,12 +93,17 @@ export const ServicesProvider = ({ children }: { children: ReactNode }) => {
       setCategories(categoriesData);
       try {
         localStorage.setItem("services_cache", JSON.stringify(servicesData));
-        localStorage.setItem("categories_cache", JSON.stringify(categoriesData));
+        localStorage.setItem(
+          "categories_cache",
+          JSON.stringify(categoriesData)
+        );
       } catch (e) {
         // ignore storage errors
       }
       setLoading(false);
-      console.log(`ServicesContext: fetched ${servicesData.length} services, ${categoriesData.length} categories`);
+      console.log(
+        `ServicesContext: fetched ${servicesData.length} services, ${categoriesData.length} categories`
+      );
     } catch (err: any) {
       console.error("ServicesContext fetch error", err);
       setError(err?.message || "Failed to fetch services/categories");
@@ -104,7 +135,9 @@ export const ServicesProvider = ({ children }: { children: ReactNode }) => {
     // Always fetch fresh data in background (keeps cache fresh)
     doFetch();
 
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [doFetch]);
 
   const refresh = useCallback(async () => {
@@ -113,7 +146,9 @@ export const ServicesProvider = ({ children }: { children: ReactNode }) => {
   }, [doFetch]);
 
   return (
-    <ServicesContext.Provider value={{ services, categories, loading, error, refresh }}>
+    <ServicesContext.Provider
+      value={{ services, categories, loading, error, refresh }}
+    >
       {children}
     </ServicesContext.Provider>
   );
@@ -121,6 +156,7 @@ export const ServicesProvider = ({ children }: { children: ReactNode }) => {
 
 export const useServices = (): ServicesContextType => {
   const ctx = useContext(ServicesContext);
-  if (!ctx) throw new Error("useServices must be used within a ServicesProvider");
+  if (!ctx)
+    throw new Error("useServices must be used within a ServicesProvider");
   return ctx;
 };

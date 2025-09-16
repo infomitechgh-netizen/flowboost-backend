@@ -143,7 +143,7 @@ export const DashboardLayout = ({ children, user }: DashboardLayoutProps) => {
     const token = localStorage.getItem("token");
     if (!token || !currentUser) return;
 
-    const newSocket = io("http://localhost:5000", {
+    const newSocket = io(`${BASE_URL}`, {
       auth: { token },
     });
     setSocket(newSocket);
