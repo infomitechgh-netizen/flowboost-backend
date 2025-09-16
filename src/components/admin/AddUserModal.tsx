@@ -28,7 +28,7 @@ import { useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 interface AddUserModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -64,7 +64,7 @@ export const AddUserModal = ({
     setIsLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/users",
+        `${BASE_URL}/api/users`,
         { ...data },
         { headers: { Authorization: `Bearer ${token}` } }
       );

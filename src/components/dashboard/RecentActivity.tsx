@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import io from "socket.io-client";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 interface ActivityItem {
   id: string | number;
   user: string;
@@ -15,7 +15,7 @@ interface ActivityItem {
 }
 
 // Connect to Socket.IO
-const socket = io("http://localhost:5000"); // adjust if your server URL differs
+const socket = io(`${BASE_URL}`); // adjust if your server URL differs
 
 export const RecentActivity = () => {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
@@ -29,7 +29,7 @@ export const RecentActivity = () => {
 
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/auth/profile", {
+        const res = await fetch(`${BASE_URL}/api/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Failed to fetch profile");
@@ -49,7 +49,7 @@ export const RecentActivity = () => {
 
     try {
       // Fetch orders
-      const ordersRes = await fetch("http://localhost:5000/api/orders", {
+      const ordersRes = await fetch(`${BASE_URL}/api/orders`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!ordersRes.ok) throw new Error("Failed to fetch orders");
@@ -75,7 +75,7 @@ export const RecentActivity = () => {
       }));
 
       // Fetch wallet transactions
-      const walletRes = await fetch("http://localhost:5000/api/wallet", {
+      const walletRes = await fetch(`${BASE_URL}/api/wallet`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!walletRes.ok) throw new Error("Failed to fetch wallet transactions");

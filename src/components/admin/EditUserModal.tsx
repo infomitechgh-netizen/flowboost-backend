@@ -14,7 +14,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface EditUserModalProps {
   isOpen: boolean;
@@ -23,14 +29,19 @@ interface EditUserModalProps {
   onUpdate: (updatedUser: any) => void;
 }
 
-export const EditUserModal = ({ isOpen, onClose, user, onUpdate }: EditUserModalProps) => {
+export const EditUserModal = ({
+  isOpen,
+  onClose,
+  user,
+  onUpdate,
+}: EditUserModalProps) => {
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [role, setRole] = useState(user?.role || "user");
   const [status, setStatus] = useState(user?.status || "active");
   const token = localStorage.getItem("token");
   const { toast } = useToast();
-
+  const BASE_URL = process.env.REACT_APP_BACKEND_URL;
   useEffect(() => {
     setName(user?.name || "");
     setEmail(user?.email || "");
@@ -41,7 +52,7 @@ export const EditUserModal = ({ isOpen, onClose, user, onUpdate }: EditUserModal
   const handleSubmit = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/users/${user.id}`,
+        `${BASE_URL}/api/users/${user.id}`,
         { name, email, role, status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -68,42 +79,54 @@ export const EditUserModal = ({ isOpen, onClose, user, onUpdate }: EditUserModal
       <AlertDialogContent className="w-full max-w-sm sm:max-w-md">
         <AlertDialogHeader>
           <AlertDialogTitle>Edit User</AlertDialogTitle>
-          <AlertDialogDescription>Update user details below</AlertDialogDescription>
+          <AlertDialogDescription>
+            Update user details below
+          </AlertDialogDescription>
         </AlertDialogHeader>
 
-       <div className="flex flex-col gap-3 my-4">
-  <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
-  <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+        <div className="flex flex-col gap-3 my-4">
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Name"
+          />
+          <Input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+          />
 
-  {/* Role Dropdown */}
-  <Select value={role} onValueChange={setRole}>
-    <SelectTrigger>
-      <SelectValue placeholder="Select Role" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="admin">Admin</SelectItem>
-      <SelectItem value="moderator">Moderator</SelectItem>
-      <SelectItem value="user">User</SelectItem>
-    </SelectContent>
-  </Select>
+          {/* Role Dropdown */}
+          <Select value={role} onValueChange={setRole}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="admin">Admin</SelectItem>
+              <SelectItem value="moderator">Moderator</SelectItem>
+              <SelectItem value="user">User</SelectItem>
+            </SelectContent>
+          </Select>
 
-  {/* Status Dropdown */}
-  <Select value={status} onValueChange={setStatus}>
-    <SelectTrigger>
-      <SelectValue placeholder="Select Status" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="active">Active</SelectItem>
-      <SelectItem value="inactive">Inactive</SelectItem>
-      <SelectItem value="suspended">Suspended</SelectItem>
-    </SelectContent>
-  </Select>
-</div>
-
+          {/* Status Dropdown */}
+          <Select value={status} onValueChange={setStatus}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="inactive">Inactive</SelectItem>
+              <SelectItem value="suspended">Suspended</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleSubmit} className="bg-primary text-white hover:bg-primary/90">
+          <AlertDialogAction
+            onClick={handleSubmit}
+            className="bg-primary text-white hover:bg-primary/90"
+          >
             Save
           </AlertDialogAction>
         </AlertDialogFooter>

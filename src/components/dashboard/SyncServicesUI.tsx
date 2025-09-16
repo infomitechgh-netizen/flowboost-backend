@@ -1,11 +1,22 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/components/ui/use-toast";
-
-const SyncServicesUI = ({ markup, setMarkup }: { markup: number; setMarkup: (value: number) => void }) => {
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+const SyncServicesUI = ({
+  markup,
+  setMarkup,
+}: {
+  markup: number;
+  setMarkup: (value: number) => void;
+}) => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -17,7 +28,7 @@ const SyncServicesUI = ({ markup, setMarkup }: { markup: number; setMarkup: (val
       if (!token) throw new Error("No token found");
 
       // Start syncing
-      const res = await fetch("http://localhost:5000/api/services/sync", {
+      const res = await fetch(`${BASE_URL}/api/services/sync`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +66,9 @@ const SyncServicesUI = ({ markup, setMarkup }: { markup: number; setMarkup: (val
   return (
     <div className="space-y-3">
       <div className="flex flex-col space-y-2">
-        <label htmlFor="markup" className="font-bold">Markup Percentage (%)</label>
+        <label htmlFor="markup" className="font-bold">
+          Markup Percentage (%)
+        </label>
         <Input
           id="markup"
           type="number"

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 interface SyncServicesModalProps {
   markup: number;
   setMarkup: (value: number) => void;
@@ -27,7 +27,7 @@ const SyncServicesModal: React.FC<SyncServicesModalProps> = ({ markup, setMarkup
 
       setProgress(10);
 
-      const res = await fetch("http://localhost:5000/api/services/sync", {
+      const res = await fetch( `${BASE_URL}/api/services/sync`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
